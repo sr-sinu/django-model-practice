@@ -1,12 +1,25 @@
+'''Importing model class '''
 from django.db import models
 
-class MyModel(models.Model):
-    custom_id = models.CharField(max_length=10, primary_key=True)  # Define a CharField for the custom ID
 
+#Create custom model class
+class MyModel(models.Model):
+    #Define choices
+    SHIRT_SIZES = [
+        ("S","Small"),
+        ("M","Medium"),
+        ("L","Large"),
+            ]
+    
+    user_id = models.CharField(max_length=10,
+                                 primary_key=True)  # Define a CharField for the user ID
     # Other fields of the model
     field1 = models.CharField(max_length=100)
-    field2 = models.IntegerField()
-
+    #added choice field
+    shirt_size = models.CharField(max_length=1,
+                                  choices= SHIRT_SIZES)
+    shirt_type_2 = models.TextChoices("ShirtType","Small Medium Large") #added another type of choice field
+    
     def save(self, *args, **kwargs):
         if not self.custom_id:  # Generate custom ID only if it's not provided
             last_id = MyModel.objects.order_by('-custom_id').first()
